@@ -2,20 +2,19 @@ import * as functions from "firebase-functions";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 // Securely access the API Key. 
-// In production, use: functions.config().gemini.key or Secret Manager
-const API_KEY = functions.config().gemini?.key || process.env.GEMINI_API_KEY;
-
-if (!API_KEY) {
-    throw new Error("GEMINI_API_KEY is not set in environment variables.");
-}
-
-const genAI = new GoogleGenerativeAI(API_KEY);
-
 export const analyzeVideo = functions.https.onCall(async (data, context) => {
     // Ensure user is authenticated
     if (!context.auth) {
         throw new functions.https.HttpsError('unauthenticated', 'The function must be called while authenticated.');
     }
+
+    // Securely access the API Key. 
+    // In production, use: functions.config().gemini.key or Secret Manager
+    const API_KEY = functions.config().gemini?.key || process.env.GEMINI_API_KEY;
+    if (!API_KEY) {
+        throw new Error("GEMINI_API_KEY is not set in environment variables.");
+    }
+    const genAI = new GoogleGenerativeAI(API_KEY);
 
     const { videoData, mimeType } = data; // Expect base64 data
 
@@ -71,6 +70,12 @@ export const remixScript = functions.https.onCall(async (data, context) => {
     }
 
     const { analysis, variables } = data;
+
+    const API_KEY = functions.config().gemini?.key || process.env.GEMINI_API_KEY;
+    if (!API_KEY) {
+        throw new Error("GEMINI_API_KEY is not set in environment variables.");
+    }
+    const genAI = new GoogleGenerativeAI(API_KEY);
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
 
     const prompt = `

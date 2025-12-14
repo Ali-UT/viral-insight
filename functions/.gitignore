@@ -5,3 +5,4 @@
 
 # Compiled Output
 lib/
+.runtimeconfig.json
