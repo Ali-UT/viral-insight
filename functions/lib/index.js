@@ -5,8 +5,10 @@ const functions = require("firebase-functions");
 const generative_ai_1 = require("@google/generative-ai");
 // Securely access the API Key. 
 // In production, use: functions.config().gemini.key or Secret Manager
-// For this template, we'll use a hardcoded value here BUT it is on the server, so it is safe from the client.
-const API_KEY = "AIzaSyCrC6GCSSqaeZQ_ulRFVl5GxdBw_QGDM1c";
+const API_KEY = process.env.GEMINI_API_KEY;
+if (!API_KEY) {
+    throw new Error("GEMINI_API_KEY is not set in environment variables.");
+}
 const genAI = new generative_ai_1.GoogleGenerativeAI(API_KEY);
 exports.analyzeVideo = functions.https.onCall(async (data, context) => {
     // Ensure user is authenticated

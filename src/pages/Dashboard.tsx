@@ -27,8 +27,8 @@ export function Dashboard() {
         setError('');
     };
 
-    const handleUrlSubmit = (url: string) => {
-        console.log("Submitted URL:", url);
+    const handleUrlSubmit = (_url: string) => {
+        // console.log("Submitted URL:", url);
         alert("URL downloading is not yet implemented. Please upload a file for now.");
     };
 

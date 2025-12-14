@@ -3,7 +3,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 
 // Securely access the API Key. 
 // In production, use: functions.config().gemini.key or Secret Manager
-const API_KEY = process.env.GEMINI_API_KEY;
+const API_KEY = functions.config().gemini?.key || process.env.GEMINI_API_KEY;
 
 if (!API_KEY) {
     throw new Error("GEMINI_API_KEY is not set in environment variables.");
